@@ -19,11 +19,13 @@ class BackupIndicator extends PanelMenu.Button {
 		// create icon
         this.hbox = new St.BoxLayout({style_class: 'panel-button', visible: true, reactive: true, can_focus: true, track_hover: true}); 
 		this.icon = new St.Icon({ icon_name: 'emblem-synchronizing-symbolic', style_class: 'system-status-icon' });
+		// if Yaru icon theme is installed, you can use:
+		// this.icon = new St.Icon({ icon_name: 'org.gnome.DejaDup-symbolic', style_class: 'system-status-icon' });
         this.hbox.add_child(this.icon);
         this.add_child(this.hbox);
         
         // connect signal
-        this.connect('button-press-event', Lang.bind(this, this._runBackup));
+        this.click = this.connect('button-press-event', Lang.bind(this, this._runBackup));
 	}
 	
 	_runBackup() {
@@ -32,6 +34,11 @@ class BackupIndicator extends PanelMenu.Button {
 		} catch(err) {
 			Main.notify("Error: unable to run backup");
 		}
+	}
+	
+	destroy() {
+		this.disconnect(this.click);
+		super.destroy()
 	}
 })
 
@@ -42,7 +49,7 @@ var _indicator;
 
 function enable() {
     _indicator = new BackupIndicator();
-    Main.panel.addToStatusArea('backup-indicator', _indicator);
+    Main.panel.addToStatusArea('backup-indicator', _indicator, 4);
 }
 
 function disable() {
