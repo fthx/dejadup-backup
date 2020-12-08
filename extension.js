@@ -4,7 +4,7 @@
 	License: GPLv3 */
 	
 
-const { Clutter, GLib, GObject, Shell, St } = imports.gi;
+const { GObject, St } = imports.gi;
 const Main = imports.ui.main;
 const Util = imports.misc.util;
 const PanelMenu = imports.ui.panelMenu;
@@ -38,7 +38,7 @@ class BackupIndicator extends PanelMenu.Button {
 	
 	destroy() {
 		this.disconnect(this.click);
-		super.destroy()
+		super.destroy();
 	}
 })
 
@@ -49,7 +49,7 @@ var _indicator;
 
 function enable() {
     _indicator = new BackupIndicator();
-    Main.panel.addToStatusArea('backup-indicator', _indicator, 4);
+    Main.panel.addToStatusArea('backup-indicator', _indicator);
 }
 
 function disable() {
